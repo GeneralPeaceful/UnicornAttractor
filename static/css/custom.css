@@ -1,0 +1,19 @@
+.summary-container {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding-top: 0.5rem;
+}
+
+.summary-header {
+    border-bottom: 1px solid black;
+}
+
+.summary-content {
+    padding-top: 1rem;
+}
+
+.summary-footer {
+    border-top: 1px solid black;
+    padding-top: 1rem;
+}
