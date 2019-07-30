@@ -20,6 +20,8 @@ from django.views.static import serve
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', RedirectView.as_view(url='posts/')),
+    url(r'^$', RedirectView.as_view(url='posts/'), name='home'),
     url(r'^posts/', include('posts.urls')),
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^bugs_&_features/', include('issuetracker.urls')),
 ]

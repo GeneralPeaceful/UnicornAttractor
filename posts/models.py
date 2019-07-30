@@ -6,6 +6,7 @@ class Post(models.Model):
     """
     A single blog post
     """
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
     tags = models.CharField(max_length=50, blank=True, null=True)
