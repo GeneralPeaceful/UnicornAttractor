@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row summary-container align-bottom">
+        <div class="col-6">
+            <h2>Bugs</h2>
+        </div>
+        <div class="col-6 text-right">
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_bug' %}" class="btn btn-primary">Report Bug</a>
+            {% else %}
+                <div class="request-login" title="You must be logged in to report a bug.">
+                    <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to report a bug</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    {% for bug in bugs|dictsortreversed:"num_votes" %}
+        <div class="row summary-container">
+            <div class="col-12 summary-header">
+                <h3><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h3>
+                <p class="fine-print"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
+            </div>
+            <div class="col-12 summary-content">
+                <p>{{ bug.description|truncatewords:30 }} <a href="{% url 'bug' bug.id %}">Read more</a></p>
+            </div>
+            <div class="col-12 summary-footer">
+                <p>{{ bug.num_votes }} other {% if bug.num_votes > 1 or bug.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
+            </div>
+        </div>
+        {% empty %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            No bugs found.
+        </li>
+    {% endfor %}
+{% endblock %}

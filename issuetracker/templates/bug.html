@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row summary-container">
+        <div class="col-12 summary-header">
+            <h3>{{ bug.title }}</h3>
+        </div>
+        <div class="col-12 summary-content">
+            <p>{{ bug.description }}</p>
+        </div>
+        <div class="col-12 summary-footer">
+            <div class="col-12 col-sm-8 float-left"></div>
+                <p><strong>Published on:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
+            <div class="col-12 col-sm-4 float-right text-right">
+                <p>
+                    <a href="{% url 'bugs' %}" class="btn btn-info">Back to bugs</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
