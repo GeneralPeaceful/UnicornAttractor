@@ -123,17 +123,17 @@ def add_vote(request, bugid):
         return JsonResponse({'status': 'Fail', 'msg': 'That is not a valid request.'})
 
 @login_required
-def edit_bug(request, ticketid):
+def edit_bug(request, bugid):
     """
     Edit a bug report
     """
-    ticket = get_object_or_404(Ticket, pk=ticketid)
+    ticket = get_object_or_404(Ticket, pk=bugid)
     form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
-        return redirect('bug', ticketid)
-    return render(request, 'editbug.html', {'form': form, 'ticketid': ticketid})
+        return redirect('bug', bugid)
+    return render(request, 'editbug.html', {'form': form, 'bugid': bugid})
 
 @login_required
 def edit_feature(request, ticketid):

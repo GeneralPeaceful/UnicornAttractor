@@ -12,6 +12,9 @@
                 <p><strong>Published on:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
             <div class="col-12 col-sm-4 float-right text-right">
                 <p>
+                    {% if user == bug.created_by or user.is_staff == True %}
+                    <a href="{% url 'edit_bug' bug.id %}" class="btn btn-info">Edit Bug</a>
+                    {% endif %}
                     <a href="{% url 'bugs' %}" class="btn btn-info">Back to bugs</a>
                 </p>
             </div>
