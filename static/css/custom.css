@@ -41,3 +41,8 @@
 .request-login {
     margin-top: 6px;
 }
+
+.status-button,
+.status-button:not(:disabled) {
+    cursor: auto;
+}

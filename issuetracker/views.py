@@ -136,17 +136,17 @@ def edit_bug(request, bugid):
     return render(request, 'editbug.html', {'form': form, 'bugid': bugid})
 
 @login_required
-def edit_feature(request, ticketid):
+def edit_feature(request, featureid):
     """
     Edit a feature request
     """
-    ticket = get_object_or_404(Ticket, pk=ticketid)
-    form = RequestFeatureForm(request.POST or None, instance=ticket)
+    ticket = get_object_or_404(Ticket, pk=featureid)
+    form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
-        return redirect('feature', ticketid)
-    return render(request, 'editfeature.html', {'form': form, 'ticketid': ticketid})
+        return redirect('feature', featureid)
+    return render(request, 'editfeature.html', {'form': form, 'featureid': featureid})
 
 def update_ticket_status(request, ticketid):
     """

@@ -18,8 +18,13 @@
     {% for bug in bugs|dictsortreversed:"num_votes" %}
         <div class="row summary-container">
             <div class="col-12 summary-header">
-                <h3><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h3>
-                <p class="fine-print"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
+                <div class="col-8 float-left">
+                    <h3><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h3>
+                </div>
+                <div class="col-4 float-left text-right">
+                    <button class="btn btn-{{ bug.status_colour }} status-button">Bugfix Status: {{ bug.status }}</button>
+                </div>
+                <p class="fine-print col-12 float-left"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
             </div>
             <div class="col-12 summary-content">
                 <p>{{ bug.description|truncatewords:30 }} <a href="{% url 'bug' bug.id %}">Read more</a></p>

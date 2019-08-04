@@ -6,14 +6,23 @@ class Ticket(models.Model):
     """
     Model for both bug reports and feature requests, all summed up as a 'Ticket'
     """
+    PENDING = 'To do'
+    DOING = 'In Progress'
+    DONE = 'Complete'
+    
     ticket_types = (
         ('Bug','Bug Report'),
         ('Feature','Feature Request')
     )
     ticket_status = (
-        ('Pending', 'Pending'),
-        ('In Progress', 'In Progress'),
-        ('Complete', 'Complete')
+        ('To do', PENDING),
+        ('In Progress', DOING),
+        ('Complete', DONE)
+    )
+    ticket_status_colour = (
+        ('dark', PENDING),
+        ('warning', DOING),
+        ('success', DONE)
     )
     
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -22,7 +31,8 @@ class Ticket(models.Model):
     url = models.CharField(max_length=250, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=20.00)
     ticket_type = models.CharField(max_length=20, choices=ticket_types, blank=False)
-    status = models.CharField(max_length=20, choices=ticket_status, default='Pending')
+    status = models.CharField(max_length=20, choices=ticket_status, default=PENDING)
+    status_colour = models.CharField(max_length=20, choices=ticket_status_colour, default=PENDING)
     created_on = models.DateTimeField(default=datetime.now)
     completion = models.IntegerField(default=0)
 

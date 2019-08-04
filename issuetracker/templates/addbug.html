@@ -9,10 +9,10 @@
             <form method="POST" class="post-form" enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ form | as_bootstrap }}
-                <button type="submit" class="btn btn-info float-right">
+                <button type="submit" class="btn btn-info float-right" style="margin-left: 10px">
                     <i class="fa fa-check"></i> Save
                 </button>
-                <button href="{% url 'bugs' %}" class="btn btn-warning float-right" style="margin-left: 10px">
+                <button href="{% url 'bugs' %}" class="btn btn-warning float-right">
                     <i class="fa fa-times"></i> Cancel
                 </button>
             </form>
