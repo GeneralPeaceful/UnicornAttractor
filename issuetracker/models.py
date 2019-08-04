@@ -32,7 +32,7 @@ class Ticket(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=20.00)
     ticket_type = models.CharField(max_length=20, choices=ticket_types, blank=False)
     status = models.CharField(max_length=20, choices=ticket_status, default=PENDING)
-    status_colour = models.CharField(max_length=20, choices=ticket_status_colour, default=PENDING)
+    status_colour = models.CharField(max_length=20, choices=ticket_status_colour, default='dark')
     created_on = models.DateTimeField(default=datetime.now)
     completion = models.IntegerField(default=0)
 

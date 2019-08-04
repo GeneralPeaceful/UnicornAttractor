@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Ticket, Contribution, Vote
-from .forms import ReportBugForm, RequestFeatureForm
+from .forms import ReportBugForm, RequestFeatureForm, StaffReportBugForm, StaffRequestFeatureForm
 
 def bugs(request):
     """
@@ -128,7 +128,12 @@ def edit_bug(request, bugid):
     Edit a bug report
     """
     ticket = get_object_or_404(Ticket, pk=bugid)
-    form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
+    
+    if request.user.is_staff:
+        form = StaffReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
+    else:
+        form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
+        
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
@@ -141,7 +146,11 @@ def edit_feature(request, featureid):
     Edit a feature request
     """
     ticket = get_object_or_404(Ticket, pk=featureid)
-    form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
+    if request.user.is_staff:
+        form = StaffRequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
+    else:
+        form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
+        
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')

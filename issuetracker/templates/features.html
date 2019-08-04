@@ -9,7 +9,7 @@
                 <a href="{% url 'add_feature' %}" class="btn btn-primary">Request a feature</a>
             {% else %}
                 <div class="request-login" title="You must be logged in to request a feature.">
-                    <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to report a feature</p>
+                    <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to request a feature</p>
                 </div>
             {% endif %}
         </div>
@@ -19,7 +19,7 @@
         <div class="row summary-container">
             <div class="col-12 summary-header">
                 <div class="col-6 col-md-8 float-left">
-                    <h3><a href="{% url 'feature' feature.id %}">#{{ feature.id }} - {{ feature.title }}</a></h3>
+                    <h3><a href="{% url 'feature' feature.id %}">{{ feature.title }}</a></h3>
                 </div>
                 <div class="col-6 col-md-4 float-left text-right">
                     <button class="btn btn-{{ feature.status_colour }} status-button">Development Status: {{ feature.status }}</button>

@@ -9,6 +9,14 @@ class ReportBugForm(forms.ModelForm):
         model = Ticket
         fields = ('title', 'description', 'url')
 
+class StaffReportBugForm(forms.ModelForm):
+    """
+    Form to report a bug
+    """
+    class Meta:
+        model = Ticket
+        fields = ('title', 'description', 'url', 'status', 'status_colour')
+
 class RequestFeatureForm(forms.ModelForm):
     """
     Form to request a feature
@@ -16,3 +24,11 @@ class RequestFeatureForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ('title', 'description', 'url', 'price')
+
+class StaffRequestFeatureForm(forms.ModelForm):
+    """
+    Form to report a bug
+    """
+    class Meta:
+        model = Ticket
+        fields = ('title', 'description', 'url', 'price', 'status', 'status_colour')
