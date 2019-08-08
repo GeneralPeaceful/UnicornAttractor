@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="row summary-container align-bottom">
+        <div class="col-{% if cart_items %}6{% else %}12{% endif %}">
+            <h2>Cart</h2>
+        </div>
+        {% if cart_items %}
+        <div class="col-6 text-right">
+            <form action="{% url 'charge' %}" method='POST'>
+                {% csrf_token %}
+                <input type="hidden" name="stripe_api_key" value="{{ key }}" />
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Unicorn Attractor Contribution" data-amount="{{ total_in_cents }}" data-locale="auto" data-currency="gbp" data-label="Checkout"></script>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    <hr>
+    {% for item in cart_items %}
+    <div class="row summary-container">
+        <div class="col-12 summary-header">
+            <h3>{{ item.title }}</h3>
+        </div>
+        <div class="col-12 summary-content">
+            <h4>Contribution Amount:</h4>
+            <div>
+                <form action="{% url 'update_cart' item.id %}" method="POST" class="form-inline d-inline">
+                    {% csrf_token %}
+                    <span class="d-inline">&pound;</span>
+                    <input class="form-control" type="number" min="1" step="any" name="contribution_amount" value="{{ item.contribution_amount }}" required/>
+                    <button type="submit" class="btn btn-primary">Update Amount</button>
+                </form>
+            </div>
+            <h4>Feature description:</h4>
+            <p>{{ item.description }}</p>
+        </div>
+        <div class="col-12 summary-footer">
+            <form action="{% url 'remove_from_cart' item.id %}" method="POST" class="float-right">
+                {% csrf_token %}
+                <div class="controls form-inline">
+                    <button class="btn btn-dark float-right">Remove Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="row summary-container align-bottom">
+        <div class="col-12">
+            <h4>Your cart is empty. Please head over to the <a href="{% url 'features' %}">features</a> page and consider contributing to one of the features there. Alternatively, if you have an idea for a <a href="{% url 'add_feature' %}">feature</a>, please request it!</h4>
+        </div>
+    </div>
+    {% endfor %}
+    {% if cart_items %}
+    <div class="row summary-container">
+        <div class="col-12">
+            <h4>Total Payment: &pound;{{ total }}</h4>
+            <p>If you are happy to contribute, simply click the Checkout button above and enter your card details to pay securely.</p>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

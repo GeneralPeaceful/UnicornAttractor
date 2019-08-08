@@ -2,7 +2,7 @@
 {% block content %}
     <div class="row summary-container align-bottom">
         <div class="col-6">
-            <h2>features</h2>
+            <h2>Features</h2>
         </div>
         <div class="col-6 text-right">
             {% if user.is_authenticated %}
@@ -34,8 +34,10 @@
             </div>
         </div>
         {% empty %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            No features found.
-        </li>
+        <div class="row summary-container align-bottom">
+            <div class="col-12">
+                <h4>No features found. If you have an idea for one, please request it!</h4>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}

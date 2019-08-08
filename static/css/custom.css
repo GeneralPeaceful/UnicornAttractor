@@ -42,7 +42,33 @@
     margin-top: 6px;
 }
 
+/* BOOTSTRAP OVERRIDES */
+
 .status-button,
 .status-button:not(:disabled) {
     cursor: auto;
+}
+
+.status-button.btn-success:focus,
+.status-button.btn-warning:focus,
+.status-button.btn-dark:focus {
+    box-shadow: none;
+}
+
+.status-button.btn-dark:not(:disabled):not(.disabled):active,
+.status-button.btn-dark:hover {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.status-button.btn-warning:not(:disabled):not(.disabled):active,
+.status-button.btn-warning:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.status-button.btn-success:not(:disabled):not(.disabled):active,
+.status-button.btn-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
 }
