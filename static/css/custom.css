@@ -90,3 +90,10 @@
 .w-90 {
     width: 90%;
 }
+
+/* ALERT OVERRIDES */
+
+.alert-success {
+    border-radius: 5px;
+    margin: 5px;
+}
