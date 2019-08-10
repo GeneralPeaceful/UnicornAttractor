@@ -11,15 +11,22 @@
             <p>{{ feature.description }}</p>
         </div>
         <div class="col-12 summary-footer">
-            <div class="col-12 col-md-8 float-left"></div>
+            <div class="col-12">
+                Development cost: £{{ feature.price }}
+                <div class="progress">
+                    <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" aria-valuenow="{{ feature.completion }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
+                        <strong class="position-absolute w-90">£quantity - {{ feature.completion }}% funded</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 float-left">
                 <p><strong>Published on:</strong> {{ feature.created_on }} by {{ feature.created_by }}</p>
+            </div>
             <div class="col-12 col-md-4 float-right text-right">
-                <p>
-                    {% if user == feature.created_by or user.is_staff == True %}
-                    <a href="{% url 'edit_feature' feature.id %}" class="btn btn-info">Edit feature</a>
-                    {% endif %}
-                    <a href="{% url 'features' %}" class="btn btn-info">Back to features</a>
-                </p>
+                {% if user == feature.created_by or user.is_staff == True %}
+                <a href="{% url 'edit_feature' feature.id %}" class="btn btn-info">Edit feature</a>
+                {% endif %}
+                <a href="{% url 'features' %}" class="btn btn-info">Back to features</a>
             </div>
         </div>
     </div>

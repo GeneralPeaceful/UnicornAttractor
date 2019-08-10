@@ -18,6 +18,7 @@
 .summary-footer {
     border-top: 1px solid black;
     padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .logo-container {
@@ -71,4 +72,21 @@
 .status-button.btn-success:hover {
     background-color: #28a745;
     border-color: #28a745;
+}
+
+.progress {
+    height: 2.5rem;
+    background-color: #8f8f8f;
+    padding: 0;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+}
+
+.progress-bar {
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.w-90 {
+    width: 90%;
 }

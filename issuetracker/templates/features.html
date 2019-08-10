@@ -27,16 +27,27 @@
                 <p class="fine-print col-12 float-left"><strong>Requested:</strong> {{ feature.created_on }} by {{ feature.created_by }}</p>
             </div>
             <div class="col-12 summary-content">
-                <p>{{ feature.description|truncatewords:30 }} <a href="{% url 'feature' feature.id %}">Read more</a></p>
+                <div class="col-12">
+                    <p>{{ feature.description|truncatewords:30 }} <a href="{% url 'feature' feature.id %}">Read more</a></p>
+                </div>
             </div>
             <div class="col-12 summary-footer">
-                <p>{{ feature.num_votes }} other {% if feature.num_votes > 1 or feature.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
+                <div class="col-12">
+                    Development cost: £{{ feature.price }}
+                    <div class="progress">
+                        <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" aria-valuenow="{{ feature.completion }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
+                            <strong class="position-absolute w-90">£quantity - {{ feature.completion }}% funded</strong>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         {% empty %}
         <div class="row summary-container align-bottom">
             <div class="col-12">
-                <h4>No features found. If you have an idea for one, please request it!</h4>
+                <div class="col-12">
+                    <h4>No features found. If you have an idea for one, please request it!</h4>
+                </div>
             </div>
         </div>
     {% endfor %}

@@ -27,10 +27,14 @@
                 <p class="fine-print col-12 float-left"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
             </div>
             <div class="col-12 summary-content">
-                <p>{{ bug.description|truncatewords:30 }} <a href="{% url 'bug' bug.id %}">Read more</a></p>
+                <div class="col-12">
+                    <p>{{ bug.description|truncatewords:30 }} <a href="{% url 'bug' bug.id %}">Read more</a></p>
+                </div>
             </div>
             <div class="col-12 summary-footer">
-                <p>{{ bug.num_votes }} other {% if bug.num_votes > 1 or bug.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
+                <div class="col-12">
+                    <span>{{ bug.num_votes }} other {% if bug.num_votes > 1 or bug.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</span>
+                </div>
             </div>
         </div>
         {% empty %}

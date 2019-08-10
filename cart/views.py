@@ -69,16 +69,6 @@ def remove_from_cart(request, featureid):
 
 
 @login_required
-def checkout(request):
-
-    context = {
-        'key': settings.STRIPE_PUBLISHABLE
-    }
-
-    return render(request, "checkout.html", context)
-
-
-@login_required
 def charge(request):
     """
     Handle payment processing when user submits card details
