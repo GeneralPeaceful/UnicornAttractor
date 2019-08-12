@@ -114,7 +114,7 @@ def add_vote(request, bugid):
                 vote.save()
                 return JsonResponse({
                     'status': 'Success',
-                    'msg': 'Upvoted!',
+                    'msg': 'Vote successful.',
                     'numVotes': total_votes+1
                 })
         except Ticket.DoesNotExist:

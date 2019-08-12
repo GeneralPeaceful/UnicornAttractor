@@ -14,11 +14,18 @@
             <div class="col-12 col-sm-8 float-left">
                 <p><strong>Published on:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
             </div>
-            <div class="col-12 col-sm-4 float-right text-right">
+            <div class="col-12 col-sm-4 float-right text-center">
                 {% if user == bug.created_by or user.is_staff == True %}
                 <a href="{% url 'edit_bug' bug.id %}" class="btn btn-info">Edit Bug</a>
                 {% endif %}
                 <a href="{% url 'bugs' %}" class="btn btn-info">Back to bugs</a>
+                <p><span id="votes">{{ votes }}</span> other {% if votes > 1 or votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
+                <form action="#" id="vote-form" method="POST">
+                    <button onClick="voteOnTicket('{{ bug.id }}', '{{ csrf_token }}')" class="btn btn-info">
+                        Me too
+                        <i class="fa fa-arrow-up"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
