@@ -43,7 +43,7 @@ class Vote(models.Model):
     """
     Model for handling users' votes on tickets
     """
-    voted_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING)
     voted_on = models.DateTimeField(default=datetime.now)
 
@@ -55,10 +55,10 @@ class Contribution(models.Model):
     Model for tracking contributions made towards feature development
     """
 
-    contributor = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING)
     amount = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
     contributed_on = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.userid.username
+        return self.user.username
