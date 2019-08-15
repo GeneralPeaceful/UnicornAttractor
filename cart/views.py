@@ -16,12 +16,13 @@ def view_cart(request):
     """
     View all the contributions saved up
     """
-    num_contributions = Contribution.objects.filter(contributor_id=request.user.id).count()
+    num_contributions = Contribution.objects.filter(user=request.user.id).count()
     context = {
         'key': settings.STRIPE_PUBLISHABLE,
         'num_contributions': num_contributions
     }
     return render(request, "cart.html", context)
+
 
 @login_required
 def add_to_cart(request, featureid):
@@ -33,23 +34,20 @@ def add_to_cart(request, featureid):
             request, 'You must submit a valid contribution amount.')
         return redirect('feature'+featureid)
 
-    cart = request.session.get('cart', {})
+    cart = request.session.get('view_cart', {})
     if featureid not in cart:
-
         cart[featureid] = {
             'id': featureid,
             'contrib_amount': request.POST['contribution_amount']
         }
-
     else:
-
         messages.error(
             request, 'You\'re already contributing to this feature.')
-        return redirect('feature'+featureid)
+        return redirect('feature', featureid)
 
     request.session['cart'] = cart
+    return redirect("view_cart")
 
-    return redirect("cart")
 
 @login_required
 def remove_from_cart(request, featureid):
@@ -57,14 +55,11 @@ def remove_from_cart(request, featureid):
     Delete a contribution from the cart
     """
     cart = request.session.get('cart', {})
-
     if featureid in cart:
-
         del cart[featureid]
         messages.success(request, "Feature contribution removed.")
 
     request.session['cart'] = cart
-
     return redirect(reverse('cart'))
 
 
@@ -106,14 +101,12 @@ def update_cart(request, featureid):
     Update a a feature development contribution amount
     """
     cart = request.session.get('cart', {})
-
     if not request.POST['contribution_amount'] \
         or request.POST['contribution_amount'] == '' \
         or int(request.POST['contribution_amount']) < 1 \
         or float(request.POST['contribution_amount']) > 999.99:
-
-        messages.error(request, 'You must submit a valid contribution amount, not exceeding £999.99')
-        return redirect(reverse('cart'))
+            messages.error(request, 'You must submit a valid contribution amount, not exceeding £999.99')
+            return redirect(reverse('cart'))
 
     if featureid in cart:
         cart[featureid]['contribution_amount'] = request.POST['contribution_amount']

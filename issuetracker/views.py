@@ -24,6 +24,14 @@ def features(request):
     List of all feature requests
     """
     all_features = Ticket.objects.filter(ticket_type='Feature').order_by('-completion').annotate(total_contributions=Sum('contribution__amount'))
+    for feature in all_features:
+        contributions = Contribution.objects.all().filter(ticket=feature)
+        contribution_amount = Decimal(0.00)
+        for contribution in contributions:
+            contribution_amount += contribution.amount
+        feature.total_contributions = contribution_amount
+        feature.completion = feature.total_contributions/feature.price*100
+    
     context = {
         'features': all_features
     }
@@ -52,6 +60,7 @@ def feature(request, featureid):
     for contribution in contributions:
         contribution_amount += contribution.amount
     current_feature.total_contributions = contribution_amount
+    current_feature.completion = current_feature.total_contributions/current_feature.price*100
     context = {
         'feature': current_feature,
     }
