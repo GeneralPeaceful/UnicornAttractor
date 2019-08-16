@@ -32,13 +32,13 @@ def add_to_cart(request, featureid):
     if not request.POST['contribution_amount'] or request.POST['contribution_amount'] == '' or int(request.POST['contribution_amount']) < 1:
         messages.error(
             request, 'You must submit a valid contribution amount.')
-        return redirect('feature'+featureid)
+        return redirect('feature', featureid)
 
-    cart = request.session.get('view_cart', {})
+    cart = request.session.get('cart', {})
     if featureid not in cart:
         cart[featureid] = {
             'id': featureid,
-            'contrib_amount': request.POST['contribution_amount']
+            'contribution_amount': request.POST['contribution_amount']
         }
     else:
         messages.error(
@@ -60,7 +60,7 @@ def remove_from_cart(request, featureid):
         messages.success(request, "Feature contribution removed.")
 
     request.session['cart'] = cart
-    return redirect(reverse('cart'))
+    return redirect(reverse('view_cart'))
 
 
 @login_required
@@ -106,11 +106,11 @@ def update_cart(request, featureid):
         or int(request.POST['contribution_amount']) < 1 \
         or float(request.POST['contribution_amount']) > 999.99:
             messages.error(request, 'You must submit a valid contribution amount, not exceeding £999.99')
-            return redirect(reverse('cart'))
+            return redirect(reverse('view_cart'))
 
     if featureid in cart:
         cart[featureid]['contribution_amount'] = request.POST['contribution_amount']
         messages.success(request, "Cart updated successfully.")
 
     request.session['cart'] = cart
-    return redirect(reverse('cart'))
+    return redirect(reverse('view_cart'))

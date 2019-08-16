@@ -14,7 +14,7 @@
             <div class="col-12">
                 Development cost: £{{ feature.price }}
                 <div class="progress">
-                    <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" style="width: {{ feature.completion|floatformat:0 }}%;" aria-valuenow="{{ feature.total_contributions }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
+                    <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" aria-valuenow="{{ feature.completion }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
                         <strong class="position-absolute w-90">£{% if feature.total_contributions == None %}0.00{% else %}{{ feature.total_contributions|floatformat:2 }}{% endif %} - {{ feature.completion }}% funded</strong>
                     </div>
                 </div>

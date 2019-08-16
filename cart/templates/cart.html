@@ -10,7 +10,7 @@
             <form action="{% url 'charge' %}" method='POST'>
                 {% csrf_token %}
                 <input type="hidden" name="stripe_api_key" value="{{ key }}" />
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Unicorn Attractor Contribution" data-amount="{{ total_in_cents }}" data-locale="auto" data-currency="gbp" data-label="Checkout"></script>
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Unicorn Attractor Contribution" data-amount="{{ total_in_pence }}" data-locale="auto" data-currency="gbp" data-label="Checkout"></script>
             </form>
         </div>
         {% endif %}
