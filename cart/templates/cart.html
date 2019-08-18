@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load bootstrap_tags %}
 {% block content %}
     <div class="row summary-container align-bottom">
         <div class="col-{% if cart_items %}6{% else %}12{% endif %}">
@@ -7,11 +8,9 @@
         </div>
         {% if cart_items %}
         <div class="col-6 text-right">
-            <form action="{% url 'charge' %}" method='POST'>
-                {% csrf_token %}
-                <input type="hidden" name="stripe_api_key" value="{{ key }}" />
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{ key }}" data-description="Unicorn Attractor Contribution" data-amount="{{ total_in_pence }}" data-locale="auto" data-currency="gbp" data-label="Checkout"></script>
-            </form>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#stripeModal">
+                Checkout
+            </button>
         </div>
         {% endif %}
     </div>
@@ -58,4 +57,35 @@
         </div>
     </div>
     {% endif %}
+    <!-- Modal -->
+    <div class="modal fade" id="stripeModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" role='form' method='post' id='payment-form' action="{% url 'charge' %}">
+                {% csrf_token %}
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="StripeModalLabel">Unicorn Attractor Contribution</h5>
+                </div>
+                <div id='credit-card-errors' style='display:none'>
+                    <div class="alert-message block-message error" id='stripe-error-message'></div>
+                </div>
+                <div class="modal-body form-group">
+                    {{ form|as_bootstrap }}
+                </div>
+                <div class="modal-footer form-group">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" id='submit_payment_btn' name='commit' value='Pay £{{ total }}'>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_js %}
+<script type='text/javascript' src='https://js.stripe.com/v2/'></script>
+<script type='text/javascript'>
+    //<![CDATA[
+    Stripe.publishableKey = '{{ key }}';
+    //]]>
+</script>
+<script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
 {% endblock %}

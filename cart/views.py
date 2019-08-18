@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import render, redirect, reverse, get_object_or_404
+from .forms import MakePaymentForm
 from issuetracker.models import Contribution
 from issuetracker.views import Ticket
 
@@ -17,9 +18,11 @@ def view_cart(request):
     View all the contributions saved up
     """
     num_contributions = Contribution.objects.filter(user=request.user.id).count()
+    payment_form = MakePaymentForm(request.POST)
     context = {
         'key': settings.STRIPE_PUBLISHABLE,
-        'num_contributions': num_contributions
+        'num_contributions': num_contributions,
+        'form': payment_form
     }
     return render(request, "cart.html", context)
 
@@ -69,29 +72,36 @@ def charge(request):
     Handle payment processing when user submits card details
     """
     if request.method == 'POST':
-        cart = request.session.get('cart', {})
-        total_charge = 0
+        payment_form = MakePaymentForm(request.POST)
+        if payment_form.is_valid():
+            cart = request.session.get('cart', {})
+            total = 0
+            for item in cart.keys():
+                amount = cart[item]['contribution_amount']
+                total += Decimal(amount)
 
-        for item in cart.keys():
-            amount = cart[item]['contribution_amount']
-            total_charge += Decimal(amount)
+            try:
+                payment = stripe.Charge.create(
+                    amount = int(total * 100),
+                    currency = 'GBP',
+                    description = 'UA Feature Contributions: '+request.user.username,
+                    card = payment_form.cleaned_data['stripe_id'],
+                )
+            except stripe.error.CardError:
+                messages.error(request, 'There was an error processing your payment.')
 
-        try:
-            payment = stripe.Charge.create(
-                amount=int(total_charge * 100),
-                currency='gbp',
-                description='UA Feature Contribution',
-                source=request.POST['stripeToken']
-            )
-        except stripe.error.CardError:
-            messages.error(request, 'There was an error processing your payment.')
-
-        if payment.paid:
-            messages.error(request, "You have successfully paid. Please check the features page regularly to see when development begins.")
-            request.session['cart'] = {}
-            return redirect(reverse('features'))
+            if payment.paid:
+                messages.success(request, 'You have successfully paid. Please check the features page regularly to see when development begins.')
+                request.session['cart'] = {}
+                return redirect(reverse('features'))
+            else:
+                messages.error(request, 'Unable to take payment, please try again.')
         else:
-            messages.error(request, 'Unable to take payment, please try again.')
+            print(payment_form.errors)
+            messages.error(request, 'We were unable to take payment with that card.')
+            return redirect('view_cart')
+    else:
+        payment_form = MakePaymentForm(0)
     return redirect('features')
 
 
