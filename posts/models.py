@@ -19,4 +19,4 @@ class Post(models.Model):
         self.save()
     
     def __str__(self):
-        return self.title
+        return self.title+", created by "+self.author.username+" on "+str(self.created_date.date().strftime("%d-%m-%Y"))

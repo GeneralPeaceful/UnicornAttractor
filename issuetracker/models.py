@@ -37,7 +37,7 @@ class Ticket(models.Model):
     completion = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.title
+        return self.ticket_type+": "+self.title
 
 class Vote(models.Model):
     """
@@ -48,7 +48,7 @@ class Vote(models.Model):
     voted_on = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username+" voted on Bug: '"+self.ticket.title+"' on "+str(self.voted_on.date().strftime("%d-%m-%Y"))
 
 class Contribution(models.Model):
     """
@@ -61,4 +61,4 @@ class Contribution(models.Model):
     contributed_on = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username+" contributed £"+str(self.amount)+" to Feature: '"+self.ticket.title+"' on "+str(self.contributed_on.date().strftime("%d-%m-%Y"))
