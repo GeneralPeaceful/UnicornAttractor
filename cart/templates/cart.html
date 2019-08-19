@@ -25,9 +25,11 @@
             <div>
                 <form action="{% url 'update_cart' item.id %}" method="POST" class="form-inline d-inline">
                     {% csrf_token %}
-                    <span class="d-inline">&pound;</span>
-                    <input class="form-control" type="number" min="1" step="any" name="contribution_amount" value="{{ item.contribution_amount }}" required/>
-                    <button type="submit" class="btn btn-primary">Update Amount</button>
+                    <div class="controls form-inline">
+                        <span class="d-inline">&pound;</span>
+                        <input class="form-control float-right" type="number" min="1" step="any" name="contribution_amount" value="{{ item.contribution_amount }}" required/>
+                        <button type="submit" class="btn btn-primary contribute-button">Update Amount</button>
+                    </div>
                 </form>
             </div>
             <h4>Feature description:</h4>
@@ -57,7 +59,7 @@
         </div>
     </div>
     {% endif %}
-    <!-- Modal -->
+    <!-- Payment Modal -->
     <div class="modal fade" id="stripeModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <form class="modal-content" role='form' method='post' id='payment-form' action="{% url 'charge' %}">
@@ -78,6 +80,7 @@
             </form>
         </div>
     </div>
+    <!-- End of Payment Modal -->
 {% endblock %}
 
 {% block footer_js %}
