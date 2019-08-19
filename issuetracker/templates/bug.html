@@ -20,13 +20,58 @@
                 {% endif %}
                 <a href="{% url 'bugs' %}" class="btn btn-info">Back to bugs</a>
                 <p><span id="votes">{{ votes }}</span> other {% if votes > 1 or votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
+                {% if user.is_authenticated %}
                 <form action="#" id="vote-form" method="POST">
                     <button onClick="voteOnTicket('{{ bug.id }}', '{{ csrf_token }}')" class="btn btn-info">
                         Me too
                         <i class="fa fa-arrow-up"></i>
                     </button>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>
+    <hr>
+    <div class="row summary-container">
+        <div class="col-7 summary-header">
+            <h4>Comments</h4>
+        </div>
+        <div class="col-5 summary-header text-right">
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#commentModal">
+                Add Comment
+            </button>
+            {% else %}
+            <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to comment.</p>
+            {% endif %}
+        </div>
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="col-12 summary-content">
+                <p><small class="text-muted">On {{ comment.posted_on }}, {{ comment.user.username }} said:</small></p>
+                <p>{{ comment.comment }}</p>
+                <hr>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <!-- Comment Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" role='form' method='post' id='comment-form' action="{% url 'bug' bug.id %}">
+                {% csrf_token %}
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="ommentModalLabel">New Comment</h5>
+                </div>
+                <div class="modal-body form-group">
+                    <textarea class="form-control" id="comment" name="comment" placeholder="Type your comment here..." required></textarea>
+                </div>
+                <div class="modal-footer form-group">
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" id='submit_comment_btn' name='commit' value='Add comment'>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End of Comment Modal -->
 {% endblock %}

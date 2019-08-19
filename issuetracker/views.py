@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Ticket, Contribution, Vote
 from .forms import ReportBugForm, RequestFeatureForm, StaffReportBugForm, StaffRequestFeatureForm
+from comments.models import Comment
 
 def bugs(request):
     """
@@ -41,10 +42,26 @@ def bug(request, bugid):
     """
     View the details of a specific bug
     """
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            user = request.user
+            comment = request.POST['comment']
+            ticket = get_object_or_404(Ticket, pk=bugid)
+            if comment.strip() == '':
+                messages.error(request, 'Comment message is required.')
+                return redirect('bug', bugid=ticket.pk)
+            comment = Comment(user=user, comment=comment, ticket=ticket)
+            comment.save()
+            messages.success(request, 'Thanks for your comment.')
+            return redirect('bug', bugid=ticket.pk)
+
     current_bug = get_object_or_404(Ticket, pk=bugid)
+    comments = Comment.objects.all().filter(ticket=bugid)
     votes = Vote.objects.all().filter(ticket=bugid).count()
     context = {
         'bug': current_bug,
+        'comments': comments,
         'votes': votes
     }
     return render(request, 'bug.html', context)
@@ -54,7 +71,22 @@ def feature(request, featureid):
     """
     View the details of a specific feature
     """
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            user = request.user
+            comment = request.POST['comment']
+            ticket = get_object_or_404(Ticket, pk=featureid)
+            if comment.strip() == '':
+                messages.error(request, 'Comment message is required.')
+                return redirect('feature', featureid=ticket.pk)
+            comment = Comment(user=user, comment=comment, ticket=ticket)
+            comment.save()
+            messages.success(request, 'Thanks for your comment.')
+            return redirect('feature', featureid=ticket.pk)
+
     current_feature = get_object_or_404(Ticket, pk=featureid)
+    comments = Comment.objects.all().filter(ticket=featureid)
     contributions = Contribution.objects.all().filter(ticket=featureid)
     contribution_amount = Decimal(0.00)
     for contribution in contributions:
@@ -63,6 +95,7 @@ def feature(request, featureid):
     current_feature.completion = current_feature.total_contributions/current_feature.price*100
     context = {
         'feature': current_feature,
+        'comments': comments,
     }
     return render(request, 'feature.html', context)
 
@@ -116,7 +149,7 @@ def add_vote(request, bugid):
             total_votes = Vote.objects.all().filter(ticket=ticket).count()
             if existing_vote > 0:
                 return JsonResponse({
-                    'status': 'Fail', 'msg': 'You have already upvoted this ticket!'
+                    'status': 'Fail', 'msg': 'You have already voted on this ticket!'
                 })
             else:
                 vote = Vote(user=user, ticket=ticket)
@@ -142,7 +175,7 @@ def edit_bug(request, bugid):
         form = StaffReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
     else:
         form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
-        
+
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
@@ -159,7 +192,7 @@ def edit_feature(request, featureid):
         form = StaffRequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
     else:
         form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
-        
+
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
