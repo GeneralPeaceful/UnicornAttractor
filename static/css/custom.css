@@ -62,6 +62,18 @@
 
 /* CUSTOM CSS */
 
+.bg-sky {
+    background-color: #c0dfff;
+}
+
+body {
+    background-color: #00000082;
+    background-image: url(https://wallpaperplay.com/walls/full/3/d/d/88237.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 70px;
+}
+
 .contribute-button {
     margin-bottom: 0;
     margin-left: 4px;
@@ -73,6 +85,18 @@
         margin-left: 0;
         margin-top: 4px;
     }
+}
+
+.error-msg {
+    color: #721c24;
+    padding: 2px;
+    background-color: #f8d7da;
+    margin-right: -5px;
+    margin-top: 1px;
+}
+
+hr {
+    background-color: #f6f6f6e6;
 }
 
 .logo {
@@ -103,6 +127,7 @@
     border-radius: 5px;
     margin: 5px;
     padding-top: 4px;
+    background-color: #f6f6f6e6;
 }
 
 .summary-content {

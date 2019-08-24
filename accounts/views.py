@@ -5,7 +5,7 @@ from django.template.context_processors import csrf
 from django.urls import reverse
 from .forms import UserLoginForm, UserRegistrationForm
 
-
+@login_required
 def logout(request):
     """
     Logs the user out and redirects back to the home page
@@ -41,14 +41,6 @@ def login(request):
     return render(request, 'login.html', args)
 
 
-@login_required
-def profile(request):
-    """
-    A view that displays the profile page of a logged in user
-    """
-    return render(request, 'profile.html')
-
-
 def register(request):
     """
     A view that manages the registration form
@@ -57,15 +49,11 @@ def register(request):
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
             user_form.save()
-
-            user = auth.authenticate(request.POST.get('email'),
-                                     password=request.POST.get('password1'))
-
+            user = auth.authenticate(username=request.POST.get('username'), password=request.POST.get('password1'))
             if user:
                 auth.login(request, user)
                 messages.success(request, "You have successfully registered")
                 return redirect(reverse('home'))
-
             else:
                 messages.error(request, "unable to log you in at this time!")
     else:

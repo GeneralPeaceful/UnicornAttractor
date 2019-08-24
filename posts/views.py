@@ -10,9 +10,9 @@ def get_posts(request):
     """
     Returns a list of Posts that were published prior to 'now' and render them to the 'blogposts.html' template
     """
-    
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'posts.html', {'posts': posts})
+
 
 def post_detail(request, postid):
     """
@@ -43,12 +43,12 @@ def post_detail(request, postid):
     }
     return render(request, 'postdetail.html', context)
 
+
 @login_required
 def create_post(request, pk=None):
     """
     Create a post depending on if the Post ID is null or not.
     """
-    
     post = get_object_or_404(Post, pk=pk) if pk else None
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES, instance=post)
