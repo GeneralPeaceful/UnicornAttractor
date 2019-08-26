@@ -26,8 +26,8 @@ class Ticket(models.Model):
     )
     
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    title = models.CharField(max_length=250)
-    description = models.TextField()
+    title = models.CharField(max_length=250, blank=False)
+    description = models.TextField(blank=False)
     url = models.CharField(max_length=250, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=20.00)
     ticket_type = models.CharField(max_length=20, choices=ticket_types, blank=False)
