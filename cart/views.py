@@ -10,7 +10,7 @@ from .forms import MakePaymentForm
 from issuetracker.models import Contribution
 from issuetracker.views import Ticket
 
-stripe_api_key = settings.STRIPE_SECRET
+stripe.api_key = settings.STRIPE_SECRET
 
 @login_required()
 def view_cart(request):
@@ -32,9 +32,8 @@ def add_to_cart(request, featureid):
     """
     Add an amount to the cart for contributions to check out at a later time
     """
-    if not request.POST['contribution_amount'] or request.POST['contribution_amount'] == '' or int(request.POST['contribution_amount']) < 1:
-        messages.error(
-            request, 'You must submit a valid contribution amount.')
+    if not request.POST['contribution_amount'] or request.POST['contribution_amount'] == '' or float(request.POST['contribution_amount']) < 1:
+        messages.error(request, 'You must submit a valid contribution amount.')
         return redirect('feature', featureid)
 
     cart = request.session.get('cart', {})
@@ -72,6 +71,7 @@ def charge(request):
     Handle payment processing when user submits card details
     """
     if request.method == 'POST':
+        print(request.POST)
         payment_form = MakePaymentForm(request.POST)
         if payment_form.is_valid():
             cart = request.session.get('cart', {})
@@ -87,6 +87,11 @@ def charge(request):
                     description = 'UA Feature Contributions: '+request.user.username,
                     card = payment_form.cleaned_data['stripe_id'],
                 )
+                if payment.paid:
+                    for item in cart.keys():
+                        contribution = Contribution(user = request.user, ticket = get_object_or_404(Ticket, pk=item), amount = cart[item]['contribution_amount'])
+                        contribution.save()
+
             except stripe.error.CardError:
                 messages.error(request, 'There was an error processing your payment.')
 
@@ -97,7 +102,6 @@ def charge(request):
             else:
                 messages.error(request, 'Unable to take payment, please try again.')
         else:
-            print(payment_form.errors)
             messages.error(request, 'We were unable to take payment with that card.')
             return redirect('view_cart')
     else:

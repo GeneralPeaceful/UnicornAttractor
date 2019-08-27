@@ -62,7 +62,7 @@
     <!-- Payment Modal -->
     <div class="modal fade" id="stripeModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <form class="modal-content" role='form' method='post' id='payment-form' action="{% url 'charge' %}">
+            <form class="modal-content" role='form' method='POST' id='payment-form' action="{% url 'charge' %}">
                 {% csrf_token %}
                 <div class="modal-header text-center">
                     <h5 class="modal-title" id="StripeModalLabel">Unicorn Attractor Contribution</h5>
