@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
     <div class="row summary-container">
         <div class="col-6 col-md-8 summary-header float-left">
-            <h3>{{ feature.title }}</h3>
+            <h1>{{ feature.title }}</h1>
         </div>
         <div class="col-6 col-md-4 float-left text-right summary-header">
-            <button class="btn btn-{{ feature.status_colour }} status-button">Development Status: {{ feature.status }}</button>
+            <button class="btn btn-{{ feature.status_colour }} btn-header status-button">Development Status: {{ feature.status }}</button>
         </div>
         <div class="col-12 summary-content">
             <p>{{ feature.description }}</p>
@@ -15,7 +15,7 @@
                 Development cost: £{{ feature.price }}
                 <div class="progress">
                     <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" style="width: {{ feature.completion }}%" aria-valuenow="{{ feature.completion }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
-                        <strong class="position-absolute w-90">£{% if feature.total_contributions == None %}0.00{% else %}{{ feature.total_contributions|floatformat:2 }}{% endif %} - {{ feature.completion|floatformat:1 }}% funded</strong>
+                        <b class="position-absolute w-90">£{% if feature.total_contributions == None %}0.00{% else %}{{ feature.total_contributions|floatformat:2 }}{% endif %} - {{ feature.completion|floatformat:1 }}% funded</b>
                     </div>
                 </div>
             </div>
@@ -25,16 +25,17 @@
                     <div class="controls form-inline">
                         <span>&pound;</span>
                         <input class="form-control float-right" type="number" min="1" step="any" name="contribution_amount" value="0.00" required />
-                        <button class="btn btn-info float-right contribute-button">Contribute</button>
+                        <button class="btn btn-primary float-right contribute-button">Contribute</button>
                     </div>
                 </form>
             </div>
             <div class="col-12 col-md-8 float-left">
-                <p><strong>Published on:</strong> {{ feature.created_on }} by {{ feature.created_by }}</p>
+                <p><b>Published on:</b> {{ feature.created_on }} by {{ feature.created_by }}</p>
+                <p><span id="votes">{{ votes }}</span> {% if votes > 1 or votes == 0 %}people{% else %}person{%endif%} want this feature. If you do too, please consider contributing.</p>
             </div>
             <div class="col-12 col-md-4 float-right text-center">
                 {% if user == feature.created_by or user.is_staff == True %}
-                <a href="{% url 'edit_feature' feature.id %}" class="btn btn-info">Edit feature</a>
+                    <a href="{% url 'edit_feature' feature.id %}" class="btn btn-primary">Edit feature</a>
                 {% endif %}
                 <a href="{% url 'features' %}" class="btn btn-info">Back to features</a>
             </div>
@@ -43,41 +44,39 @@
     <hr>
     <div class="row summary-container">
         <div class="col-7 summary-header">
-            <h4>Comments</h4>
+            <h2>Comments</h2>
         </div>
         <div class="col-5 summary-header text-right">
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#commentModal">
-                Add Comment
-            </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">Add Comment</button>
             {% else %}
-            <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to comment.</p>
+                <p class="text-muted">Please <a href="{% url 'login' %}">Login</a> to comment.</p>
             {% endif %}
         </div>
         {% if comments %}
             {% for comment in comments %}
-            <div class="col-12 summary-content">
-                <p><small class="text-muted">On {{ comment.posted_on }}, {{ comment.user.username }} said:</small></p>
-                <p>{{ comment.comment }}</p>
-                <hr>
-            </div>
+                <div class="col-12 summary-content">
+                    <p><small class="text-muted">On {{ comment.posted_on }}, {{ comment.user.username }} said:</small></p>
+                    <p>{{ comment.comment }}</p>
+                    <hr>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
     <!-- Comment Modal -->
     <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <form class="modal-content" role='form' method='post' id='comment-form' action="{% url 'feature' feature.id %}">
+            <form class="modal-content" role="form" method="post" id="comment-form" action="{% url 'feature' feature.id %}">
                 {% csrf_token %}
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" id="ommentModalLabel">New Comment</h5>
+                    <h3 class="modal-title" id="commentModalLabel">New Comment</h3>
                 </div>
                 <div class="modal-body form-group">
                     <textarea class="form-control" id="comment" name="comment" placeholder="Type your comment here..." required></textarea>
                 </div>
                 <div class="modal-footer form-group">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" id='submit_comment_btn' name='commit' value='Add comment'>
+                    <input type="submit" class="btn btn-primary" id="submit_comment_btn" name="commit" value="Add comment">
                 </div>
             </form>
         </div>

@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
     <div class="row summary-container align-bottom">
         <div class="col-6">
-            <h2>Bugs</h2>
+            <h1>Bugs</h1>
         </div>
         <div class="col-6 text-right">
             {% if user.is_authenticated %}
@@ -19,7 +19,7 @@
         <div class="row summary-container">
             <div class="col-12 summary-header">
                 <div class="col-8 float-left">
-                    <h3><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h3>
+                    <h2><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h2>
                 </div>
                 <div class="col-4 float-left text-right">
                     <button class="btn btn-{{ bug.status_colour }} status-button">Bugfix Status: {{ bug.status }}</button>
@@ -33,13 +33,17 @@
             </div>
             <div class="col-12 summary-footer">
                 <div class="col-12">
-                    <span>{{ bug.num_votes }} other {% if bug.num_votes > 1 or bug.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</span>
+                    <p>{{ bug.num_votes }} other {% if bug.num_votes > 1 or bug.num_votes == 0 %}people have{% else %}person has{%endif%} this issue.</p>
                 </div>
             </div>
         </div>
         {% empty %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            No bugs found.
-        </li>
+        <div class="row summary-container align-bottom">
+            <div class="col-12">
+                <div class="col-12">
+                    <h2>No bugs found! Long may it stay that way...</h2>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}

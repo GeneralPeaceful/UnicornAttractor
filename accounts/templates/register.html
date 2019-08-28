@@ -1,13 +1,16 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load bootstrap_tags %}
 {% block content %}
-<div class="summary-container">
-    <div class="col-12">
-        <h1>Register</h1>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %} {{ user_form | as_bootstrap }}
-            <button type='submit' class='btn btn-info'>Register</button>
-        </form>
+    <div class="summary-container">
+        <div class="col-12">
+            <h1>Register</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <fieldset class="form-group">
+                    {% csrf_token %}
+                    {{ user_form | as_bootstrap }}
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </fieldset>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

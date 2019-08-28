@@ -1,31 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row summary-container align-bottom">
-        <div class="col-6">
-            <h2>Posts</h2>
+        <div class="col-6 summary-header">
+            <h1>Posts</h1>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-6 text-right summary-header">
             {% if user.is_authenticated %}
-                <a href="{% url 'create_post' %}" class="btn btn-primary">New Post</a>
+                <a href="{% url 'create_post' %}" class="btn btn-primary btn-header">New Post</a>
             {% else %}
                 <div class="request-login" title="You must be logged in to report a bug.">
                     <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to create a post.</p>
                 </div>
             {% endif %}
         </div>
+        <div class="col-12 summary-content">
+            <p>Welcome to Unicorn Attractor! This is the new home for all myths, legends and campfire stories. What makes it really great is that the maintenance and bug-fixing is all completely free! No ads, no annoying pop-ups, forever.</p>
+            <button id="slider-button" class="btn btn-info" onclick="infoSlider()">Toggle more info</button>
+        </div>
+        <div class="col-12 summary-footer info-slider">
+            <p>"How do I get you to prioritise a bug?" I hear you ask; This is simply done by upvoting said bug on its own page, though it requires being logged in. "What about improving the site?" I hear you ask next; That is where you, the fantastically brilliant user can help. If you want a feature added to the site, you can request it! To do so, I will require funds from said user, with a minimum expenditure of £1 (again you will need to be logged in). If it does not meet the Development Cost as stated on the feature request, fear not for I will always use <b>50% of the time I spend working on the site</b> working on the highest paid feature.</p>
+            <p><small class="text-muted">The default Development Cost is £50, but this is subject to change by staff members.</small></p>
+        </div>
     </div>
     <hr>
     {% for post in posts %}
         <div class="row summary-container">
             <div class="col-12 summary-header">
-                <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
-                <p class="fine-print"><strong>Published:</strong> {{post.published_date}} by {{post.author}}</p>
+                <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
+                <p class="fine-print"><b>Published:</b> {{ post.published_date }} by {{ post.author }}</p>
             </div>
             <div class="col-12 summary-content">
                 <p>{{ post.content|truncatewords:30 }} <a href="{% url 'post_detail' post.id %}">Read more</a></p>
             </div>
             <div class="col-12 summary-footer">
-                <p><strong>Views:</strong> {{post.views}} | <strong>Tags:</strong> {{post.tags}}</p>
+                <p><b>Views:</b> {{ post.views }} | <b>Tags:</b> {{ post.tags }}</p>
             </div>
         </div>
     {% endfor %}

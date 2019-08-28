@@ -1,12 +1,12 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
     <div class="row summary-container align-bottom">
         <div class="col-6">
-            <h2>Features</h2>
+            <h1>Features</h1>
         </div>
         <div class="col-6 text-right">
             {% if user.is_authenticated %}
-                <a href="{% url 'add_feature' %}" class="btn btn-primary">Request a feature</a>
+                <a href="{% url 'add_feature' %}" class="btn btn-primary btn-header">Request a feature</a>
             {% else %}
                 <div class="request-login" title="You must be logged in to request a feature.">
                     <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to request a feature</p>
@@ -19,7 +19,7 @@
         <div class="row summary-container">
             <div class="col-12 summary-header">
                 <div class="col-6 col-md-8 float-left">
-                    <h3><a href="{% url 'feature' feature.id %}">{{ feature.title }}</a></h3>
+                    <h2><a href="{% url 'feature' feature.id %}">{{ feature.title }}</a></h2>
                 </div>
                 <div class="col-6 col-md-4 float-left text-right">
                     <button class="btn btn-{{ feature.status_colour }} status-button">Development Status: {{ feature.status }}</button>
@@ -46,7 +46,7 @@
         <div class="row summary-container align-bottom">
             <div class="col-12">
                 <div class="col-12">
-                    <h4>No features found. If you have an idea for one, please request it!</h4>
+                    <h2>No features found. If you have an idea for one, please request it!</h2>
                 </div>
             </div>
         </div>

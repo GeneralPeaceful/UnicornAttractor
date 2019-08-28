@@ -1,62 +1,58 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
     <div class="row summary-container">
         <div class="col-12 summary-header">
-            <h3>{{post.title}}</h3>
+            <h1>{{ post.title }}</h1>
         </div>
         <div class="col-12 summary-content">
-            <p>{{post.content}}</p>
+            <p>{{ post.content }}</p>
         </div>
         <div class="col-12 summary-footer">
             <div class="col-12 col-sm-8 float-left">
-                <p><strong>Published on:</strong> {{post.published_date}} by {{post.author}}</p>
-                <p><strong>Views:</strong> {{post.views}} | <strong>Tags:</strong> {{post.tags}}</p>
+                <p><b>Published on:</b> {{ post.published_date }} by {{ post.author }}</p>
+                <p><b>Views:</b> {{ post.views }} | <b>Tags:</b> {{ post.tags }}</p>
             </div>
             <div class="col-12 col-sm-4 float-right text-right">
-                <p>
-                    <a href="{% url 'get_posts' %}" class="btn btn-info">Back to Posts</a>
-                </p>
+                <p><a href="{% url 'get_posts' %}" class="btn btn-info">Back to Posts</a></p>
             </div>
         </div>
     </div>
     <hr>
     <div class="row summary-container">
         <div class="col-7 summary-header">
-            <h4>Comments</h4>
+            <h2>Comments</h2>
         </div>
         <div class="col-5 summary-header text-right">
             {% if user.is_authenticated %}
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#commentModal">
-                Add Comment
-            </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">Add Comment</button>
             {% else %}
-            <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to comment.</p>
+                <p class="text-muted">Please <a href="{% url 'login' %}">Login</a> to comment.</p>
             {% endif %}
         </div>
         {% if comments %}
             {% for comment in comments %}
-            <div class="col-12 summary-content">
-                <p><small class="text-muted">On {{ comment.posted_on }}, {{ comment.user.username }} said:</small></p>
-                <p>{{ comment.comment }}</p>
-                <hr>
-            </div>
+                <div class="col-12 summary-content">
+                    <p><small class="text-muted">On {{ comment.posted_on }}, {{ comment.user.username }} said:</small></p>
+                    <p>{{ comment.comment }}</p>
+                    <hr>
+                </div>
             {% endfor %}
         {% endif %}
     </div>
     <!-- Comment Modal -->
     <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <form class="modal-content" role='form' method='post' id='comment-form' action="{% url 'post_detail' post.id %}">
+            <form class="modal-content" role="form" method="post" id="comment-form" action="{% url 'post_detail' post.id %}">
                 {% csrf_token %}
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" id="ommentModalLabel">New Comment</h5>
+                    <h3 class="modal-title" id="commentModalLabel">New Comment</h3>
                 </div>
                 <div class="modal-body form-group">
                     <textarea class="form-control" id="comment" name="comment" placeholder="Type your comment here..." required></textarea>
                 </div>
                 <div class="modal-footer form-group">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-primary" id='submit_comment_btn' name='commit' value='Add comment'>
+                    <input type="submit" class="btn btn-primary" id="submit_comment_btn" name="commit" value="Add comment">
                 </div>
             </form>
         </div>

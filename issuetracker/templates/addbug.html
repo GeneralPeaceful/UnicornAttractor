@@ -1,20 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load bootstrap_tags %}
 {% block content %}
-    <div class="card">
-        <div class="card-header">
-            <h3>Report Bug</h3>
+    <div class="row summary-container">
+        <div class="col-12 summary-header">
+            <h1>Report Bug</h1>
         </div>
-        <div class="card-body">
-            <form method="POST" class="post-form" enctype='multipart/form-data'>
+        <div class="col-12 summary-content">
+            <form method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form | as_bootstrap }}
-                <button type="submit" class="btn btn-info float-right" style="margin-left: 10px">
+                <button type="submit" class="btn btn-primary float-right" style="margin-left: 10px">
                     <i class="fa fa-check"></i> Save
                 </button>
-                <button href="{% url 'bugs' %}" class="btn btn-warning float-right">
+                <a href="{% url 'bugs' %}" class="btn btn-warning float-right">
                     <i class="fa fa-times"></i> Cancel
-                </button>
+                </a>
             </form>
         </div>
     </div>
