@@ -29,3 +29,7 @@ function voteOnTicket(id, csrf_token) {
     }
   });
 }
+
+function infoSlider(){
+  $('.info-slider').slideToggle();
+}
