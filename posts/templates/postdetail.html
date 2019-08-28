@@ -26,7 +26,7 @@
             {% if user.is_authenticated %}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">Add Comment</button>
             {% else %}
-                <p class="text-muted">Please <a href="{% url 'login' %}">Login</a> to comment.</p>
+                <p class="request-login text-muted">Please <a href="{% url 'login' %}">Login</a> to comment.</p>
             {% endif %}
         </div>
         {% if comments %}

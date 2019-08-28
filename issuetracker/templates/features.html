@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="row summary-container align-bottom">
-        <div class="col-6">
+        <div class="col-7">
             <h1>Features</h1>
         </div>
-        <div class="col-6 text-right">
+        <div class="col-5 text-right">
             {% if user.is_authenticated %}
                 <a href="{% url 'add_feature' %}" class="btn btn-primary btn-header">Request a feature</a>
             {% else %}
-                <div class="request-login" title="You must be logged in to request a feature.">
-                    <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to request a feature</p>
-                </div>
+                <p class="request-login align-middle">Please <a href="{% url 'login' %}">Login</a> to request a feature</p>
             {% endif %}
         </div>
     </div>
@@ -18,13 +16,13 @@
     {% for feature in features %}
         <div class="row summary-container">
             <div class="col-12 summary-header">
-                <div class="col-6 col-md-8 float-left">
+                <div class="col-6 col-md-7 float-left">
                     <h2><a href="{% url 'feature' feature.id %}">{{ feature.title }}</a></h2>
                 </div>
-                <div class="col-6 col-md-4 float-left text-right">
-                    <button class="btn btn-{{ feature.status_colour }} status-button">Development Status: {{ feature.status }}</button>
+                <div class="col-6 col-md-5 float-left text-right">
+                    <button class="btn btn-{{ feature.status_colour }} btn-header status-button">Development Status: {{ feature.status }}</button>
                 </div>
-                <p class="fine-print col-12 float-left"><strong>Requested:</strong> {{ feature.created_on }} by {{ feature.created_by }}</p>
+                <p class="fine-print col-12 float-left"><b>Requested:</b> {{ feature.created_on }} by {{ feature.created_by }}</p>
             </div>
             <div class="col-12 summary-content">
                 <div class="col-12">
@@ -36,7 +34,7 @@
                     Development cost: £{{ feature.price }}
                     <div class="progress">
                         <div class="progress-bar bg-{% if feature.completion < 100 %}info{% else %}success{% endif %}" role="progressbar" style="width: {{ feature.completion }}%" aria-valuenow="{{ feature.completion }}" aria-valuemin="0" aria-valuemax="{{ feature.price }}">
-                            <strong class="position-absolute w-90">£{% if feature.total_contributions == None %}0.00{% else %}{{ feature.total_contributions|floatformat:2 }}{% endif %} - {{ feature.completion|floatformat:1 }}% funded</strong>
+                            <b class="position-absolute w-90">£{% if feature.total_contributions == None %}0.00{% else %}{{ feature.total_contributions|floatformat:2 }}{% endif %} - {{ feature.completion|floatformat:1 }}% funded</b>
                         </div>
                     </div>
                 </div>

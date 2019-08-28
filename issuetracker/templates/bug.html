@@ -32,14 +32,14 @@
     </div>
     <hr>
     <div class="row summary-container">
-        <div class="col-7 summary-header">
+        <div class="col-6 summary-header">
             <h2>Comments</h2>
         </div>
-        <div class="col-5 summary-header text-right">
+        <div class="col-6 summary-header text-right">
             {% if user.is_authenticated %}
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#commentModal">Add Comment</button>
             {% else %}
-                <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to comment.</p>
+                <p class="request-login text-muted">Please <a href="{% url 'login' %}">Login</a> to comment.</p>
             {% endif %}
         </div>
         {% if comments %}

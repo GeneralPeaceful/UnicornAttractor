@@ -1,11 +1,20 @@
 /* BOOTSTRAP OVERRIDES */
 
 .btn {
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
 }
 
 .form-control {
     width: 95%;
+}
+
+hr {
+    background-color: #f6f6f6e6;
+    margin: 0.5rem;
+}
+
+p {
+    margin-bottom: 0.5rem;
 }
 
 .progress {
@@ -17,8 +26,8 @@
 }
 
 .progress-bar {
-    height: 40px;
-    margin-bottom: 5px;
+    height: 2.5rem;
+    margin-bottom: 0.25rem;
 }
 .status-button,
 .status-button:not(:disabled) {
@@ -56,8 +65,8 @@
 /* ALERT OVERRIDES */
 
 .alert-success {
-    border-radius: 5px;
-    margin: 5px;
+    border-radius: 0.3rem;
+    margin: 0.3rem;
 }
 
 /* CUSTOM CSS */
@@ -66,24 +75,30 @@
     background-color: #c0dfff;
 }
 
+.btn-header,
+.request-login {
+    margin-top: 0.5rem;
+}
+
 body {
-    background-color: #00000082;
-    background-image: url(https://wallpaperplay.com/walls/full/3/d/d/88237.jpg);
+    background-attachment: fixed;
+    background-color: #000216;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://wallpaperplay.com/walls/full/b/1/d/88198.jpg);
+    background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 0 70px;
 }
 
 .contribute-button {
     margin-bottom: 0;
-    margin-left: 4px;
+    margin-left: 0.25rem;
     margin-top: 0;
 }
 
 @media(max-width: 575px) {
     .contribute-button {
         margin-left: 0;
-        margin-top: 4px;
+        margin-top: 0.25rem;
     }
 }
 
@@ -95,8 +110,14 @@ body {
     margin-top: 1px;
 }
 
-hr {
-    background-color: #f6f6f6e6;
+.hr-comment {
+    background-color: #c0dfff;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.info-slider {
+    display: none;
 }
 
 .logo {
@@ -106,7 +127,7 @@ hr {
 .logo-container {
     padding-bottom: 0;
     padding-top: 0;
-    margin-right: 25px;
+    margin-right: 1.5rem;
 }
 
 .logo-text {
@@ -118,26 +139,21 @@ hr {
     font-size: 1.75rem;
 }
 
-.request-login {
-    margin-top: 6px;
-}
-
 .summary-container {
     border: 1px solid black;
-    border-radius: 5px;
-    margin: 5px;
-    padding-top: 4px;
+    border-radius: 0.25rem;
+    margin: 0.25rem;
+    padding-top: 0.25rem;
     background-color: #f6f6f6e6;
 }
 
 .summary-content {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
 .summary-footer {
     border-top: 1px solid black;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
 }
 
 .summary-header {

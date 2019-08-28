@@ -8,9 +8,7 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'add_bug' %}" class="btn btn-primary">Report Bug</a>
             {% else %}
-                <div class="request-login" title="You must be logged in to report a bug.">
-                    <p class="align-middle">Please <a href="{% url 'login' %}">Login</a> to report a bug</p>
-                </div>
+                <p class="request-login align-middle">Please <a href="{% url 'login' %}">Login</a> to report a bug</p>
             {% endif %}
         </div>
     </div>
@@ -18,10 +16,10 @@
     {% for bug in bugs|dictsortreversed:"num_votes" %}
         <div class="row summary-container">
             <div class="col-12 summary-header">
-                <div class="col-8 float-left">
+                <div class="col-7 float-left">
                     <h2><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h2>
                 </div>
-                <div class="col-4 float-left text-right">
+                <div class="col-5 float-left text-right">
                     <button class="btn btn-{{ bug.status_colour }} status-button">Bugfix Status: {{ bug.status }}</button>
                 </div>
                 <p class="fine-print col-12 float-left"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
