@@ -29,7 +29,7 @@ class Ticket(models.Model):
     title = models.CharField(max_length=250, blank=False)
     description = models.TextField(blank=False)
     url = models.CharField(max_length=250, blank=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=20.00)
+    price = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=50.00)
     ticket_type = models.CharField(max_length=20, choices=ticket_types, blank=False)
     status = models.CharField(max_length=20, choices=ticket_status, default=PENDING)
     status_colour = models.CharField(max_length=20, choices=ticket_status_colour, default='dark')
@@ -38,6 +38,7 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.ticket_type+": "+self.title
+
 
 class Vote(models.Model):
     """
@@ -50,11 +51,11 @@ class Vote(models.Model):
     def __str__(self):
         return self.user.username+" voted on Bug: '"+self.ticket.title+"' on "+str(self.voted_on.date().strftime("%d-%m-%Y"))
 
+
 class Contribution(models.Model):
     """
     Model for tracking contributions made towards feature development
     """
-
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(Ticket, on_delete=models.DO_NOTHING)
     amount = models.DecimalField(max_digits=5, decimal_places=2, blank=False)

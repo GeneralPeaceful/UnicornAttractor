@@ -5,7 +5,6 @@ from issuetracker.models import Ticket
 from posts.models import Post
 
 class Comment(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     ticket = models.ForeignKey(Ticket, blank=True, null=True, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, blank=True, null=True, on_delete=models.CASCADE)

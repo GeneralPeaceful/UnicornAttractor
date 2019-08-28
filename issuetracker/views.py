@@ -8,6 +8,7 @@ from .models import Ticket, Contribution, Vote
 from .forms import ReportBugForm, RequestFeatureForm, StaffReportBugForm, StaffRequestFeatureForm
 from comments.models import Comment
 
+
 def bugs(request):
     """
     List of all bug reports
@@ -15,10 +16,12 @@ def bugs(request):
     all_bugs = Ticket.objects.filter(ticket_type='Bug').annotate(num_votes=Count('vote')).order_by('-num_votes')
     for bug in all_bugs:
         bug.num_votes = Vote.objects.all().filter(ticket=bug.pk).count()
+
     context = {
         'bugs': all_bugs
     }
     return render(request, 'bugs.html', context)
+
 
 def features(request):
     """
@@ -30,13 +33,15 @@ def features(request):
         contribution_amount = Decimal(0.00)
         for contribution in contributions:
             contribution_amount += contribution.amount
+        
         feature.total_contributions = contribution_amount
         feature.completion = feature.total_contributions/feature.price*100
-    
+
     context = {
         'features': all_features
     }
     return render(request, 'features.html', context)
+
 
 def bug(request, bugid):
     """
@@ -51,6 +56,7 @@ def bug(request, bugid):
             if comment.strip() == '':
                 messages.error(request, 'Comment message is required.')
                 return redirect('bug', bugid=ticket.pk)
+            
             comment = Comment(user=user, comment=comment, ticket=ticket)
             comment.save()
             messages.success(request, 'Thanks for your comment.')
@@ -80,6 +86,7 @@ def feature(request, featureid):
             if comment.strip() == '':
                 messages.error(request, 'Comment message is required.')
                 return redirect('feature', featureid=ticket.pk)
+            
             comment = Comment(user=user, comment=comment, ticket=ticket)
             comment.save()
             messages.success(request, 'Thanks for your comment.')
@@ -89,23 +96,35 @@ def feature(request, featureid):
     comments = Comment.objects.all().filter(ticket=featureid)
     contributions = Contribution.objects.all().filter(ticket=featureid)
     contribution_amount = Decimal(0.00)
+    unique_contributors = []
+    votes=0
+    
     for contribution in contributions:
         contribution_amount += contribution.amount
+        if contribution.user not in unique_contributors:
+            unique_contributors.append(contribution.user)
+            votes += 1
+
     current_feature.total_contributions = contribution_amount
     current_feature.completion = current_feature.total_contributions/current_feature.price*100
     context = {
         'feature': current_feature,
         'comments': comments,
+        'votes': votes,
     }
     return render(request, 'feature.html', context)
+
 
 @login_required
 def add_bug(request):
     """
-    Report a bug
+    Display the correct form to allow a user to create a bug report
     """
     if request.method == "POST":
-        form = ReportBugForm(request.POST, request.FILES)
+        if request.user.is_authenticated:
+            form = StaffReportBugForm(request.POST)
+        else:
+            form = ReportBugForm(request.POST)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_by = request.user
@@ -113,17 +132,26 @@ def add_bug(request):
             ticket.save()
             messages.success(request, 'Your bug has been reported successfully.')
             return redirect('bug', bugid=ticket.pk)
-        return render(request, 'addbug.html', {'form': form})        
-    form = ReportBugForm()
+        
+        return render(request, 'addbug.html', {'form': form})
+
+    if request.user.is_authenticated:
+        form = StaffReportBugForm()
+    else:
+        form = ReportBugForm()
     return render(request, 'addbug.html', {'form': form})
+
 
 @login_required
 def add_feature(request):
     """
-    Request a feature
+    Display the correct form to allow a user to create a feature request
     """
     if request.method == "POST":
-        form = RequestFeatureForm(request.POST)
+        if request.user.is_staff:
+            form = StaffRequestFeatureForm(request.POST)
+        else:
+            form = RequestFeatureForm(request.POST)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_by = request.user
@@ -132,9 +160,15 @@ def add_feature(request):
             messages.success(
                 request, 'Your feature has been requested successfully.')
             return redirect('feature', featureid=ticket.pk)
+        
         return render(request, 'addfeature.html', {'form': form})
-    form = RequestFeatureForm()
+
+    if request.user.is_staff:
+        form = StaffRequestFeatureForm()
+    else:
+        form = RequestFeatureForm()
     return render(request, 'addfeature.html', {'form': form})
+
 
 @login_required
 def add_vote(request, bugid):
@@ -164,52 +198,38 @@ def add_vote(request, bugid):
     else:
         return JsonResponse({'status': 'Fail', 'msg': 'That is not a valid request.'})
 
+
 @login_required
 def edit_bug(request, bugid):
     """
-    Edit a bug report
+    Display the correct form to allow a user to edit a bug report
     """
     ticket = get_object_or_404(Ticket, pk=bugid)
-    
     if request.user.is_staff:
         form = StaffReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
     else:
         form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
-
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
         return redirect('bug', bugid)
+
     return render(request, 'editbug.html', {'form': form, 'bugid': bugid})
+
 
 @login_required
 def edit_feature(request, featureid):
     """
-    Edit a feature request
+    Display the correct form to allow a user to edit a feature request
     """
     ticket = get_object_or_404(Ticket, pk=featureid)
     if request.user.is_staff:
         form = StaffRequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
     else:
         form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
-
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
         return redirect('feature', featureid)
-    return render(request, 'editfeature.html', {'form': form, 'featureid': featureid})
 
-def update_ticket_status(request, ticketid):
-    """
-    Asynchronously update the ticket status when a change is made to it
-    """
-    if request.method == 'POST' and request.is_ajax():
-        try:
-            current_bug = Ticket.objects.get(pk=ticketid)
-            current_bug.status = request.POST['ticket_status']
-            current_bug.save()
-            return JsonResponse({'status': 'Success', 'msg': 'Status updated succesfully.'})
-        except Ticket.DoesNotExist:
-            return JsonResponse({'status': 'Fail', 'msg': 'The ticket you are looking for does not exist.'})
-    else:
-        return JsonResponse({'status': 'Fail', 'msg': 'That is not a valid request'})
+    return render(request, 'editfeature.html', {'form': form, 'featureid': featureid})

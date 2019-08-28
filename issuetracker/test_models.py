@@ -24,7 +24,7 @@ class TestModels(TestCase):
     
     def test_Ticket_defaults(self):
         self.assertEqual(self.bug.url, '')
-        self.assertEqual(self.bug.price, 20)
+        self.assertEqual(self.bug.price, 50)
         self.assertEqual(self.bug.status, 'To do')
         self.assertEqual(self.bug.status_colour, 'dark')
         self.assertEqual(self.bug.completion, 0)

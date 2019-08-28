@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import bugs, bug, features, feature, add_bug, add_feature, add_vote, edit_bug, edit_feature, update_ticket_status
+from .views import bugs, bug, features, feature, add_bug, add_feature, add_vote, edit_bug, edit_feature
 
 urlpatterns = [
     url(r'^bugs$', bugs, name='bugs'),
@@ -11,5 +11,4 @@ urlpatterns = [
     url(r'^addvote/(?P<bugid>\d+)/$', add_vote, name='add_vote'),
     url(r'^editbug/(?P<bugid>\d+)/$', edit_bug, name='edit_bug'),
     url(r'^editfeature/(?P<featureid>\d+)/$', edit_feature, name='edit_feature'),
-    url(r'^updateticketstatus/(?P<ticketid>\d+)/$', update_ticket_status, name='update_ticket_status'),
 ]

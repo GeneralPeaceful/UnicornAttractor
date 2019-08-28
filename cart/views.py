@@ -71,7 +71,6 @@ def charge(request):
     Handle payment processing when user submits card details
     """
     if request.method == 'POST':
-        print(request.POST)
         payment_form = MakePaymentForm(request.POST)
         if payment_form.is_valid():
             cart = request.session.get('cart', {})
@@ -79,7 +78,7 @@ def charge(request):
             for item in cart.keys():
                 amount = cart[item]['contribution_amount']
                 total += Decimal(amount)
-
+            
             try:
                 payment = stripe.Charge.create(
                     amount = int(total * 100),
@@ -91,10 +90,10 @@ def charge(request):
                     for item in cart.keys():
                         contribution = Contribution(user = request.user, ticket = get_object_or_404(Ticket, pk=item), amount = cart[item]['contribution_amount'])
                         contribution.save()
-
+            
             except stripe.error.CardError:
                 messages.error(request, 'There was an error processing your payment.')
-
+            
             if payment.paid:
                 messages.success(request, 'You have successfully paid. Please check the features page regularly to see when development begins.')
                 request.session['cart'] = {}
@@ -117,7 +116,7 @@ def update_cart(request, featureid):
     cart = request.session.get('cart', {})
     if not request.POST['contribution_amount'] \
         or request.POST['contribution_amount'] == '' \
-        or int(request.POST['contribution_amount']) < 1 \
+        or float(request.POST['contribution_amount']) < 1 \
         or float(request.POST['contribution_amount']) > 999.99:
             messages.error(request, 'You must submit a valid contribution amount, not exceeding £999.99')
             return redirect(reverse('view_cart'))

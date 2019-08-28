@@ -10,7 +10,7 @@ def get_posts(request):
     """
     Returns a list of Posts that were published prior to 'now' and render them to the 'blogposts.html' template
     """
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'posts.html', {'posts': posts})
 
 
@@ -28,6 +28,7 @@ def post_detail(request, postid):
             if comment.strip() == '':
                 messages.error(request, 'Comment message is required.')
                 return redirect('post_detail', postid=post.pk)
+            
             comment = Comment(user=user, comment=comment, post=post)
             comment.save()
             messages.success(request, 'Thanks for your comment.')
@@ -60,4 +61,5 @@ def create_post(request, pk=None):
             return redirect(post_detail, post.pk)
     else:
         form = AddPostForm(instance=post)
+
     return render(request, 'addpost.html', {'form': form})
