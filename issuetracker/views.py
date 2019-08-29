@@ -207,8 +207,11 @@ def edit_bug(request, bugid):
     ticket = get_object_or_404(Ticket, pk=bugid)
     if request.user.is_staff:
         form = StaffReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
-    else:
+    elif request.user == ticket.created_by:
         form = ReportBugForm(request.POST or None, request.FILES or None, instance=ticket)
+    else:
+        messages.error(request, "You cannot edit this bug as you are not its creator.")
+        return redirect('bug', bugid=ticket.pk)
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
@@ -225,8 +228,11 @@ def edit_feature(request, featureid):
     ticket = get_object_or_404(Ticket, pk=featureid)
     if request.user.is_staff:
         form = StaffRequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
-    else:
+    elif request.user == ticket.created_by:
         form = RequestFeatureForm(request.POST or None, request.FILES or None, instance=ticket)
+    else:
+        messages.error(request, "You cannot edit this feature as you are not the one who requested it.")
+        return redirect('feature', featureid=ticket.pk)
     if form.is_valid():
         form.save()
         messages.success(request, 'Your changes have been saved.')
