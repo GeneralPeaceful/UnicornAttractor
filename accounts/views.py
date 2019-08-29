@@ -20,6 +20,7 @@ def login(request):
     A view that manages the login form
     """
     if request.user.is_authenticated:
+        messages.error(request, "You are already logged in")
         return redirect('home')
     if request.method == 'POST':
         user_form = UserLoginForm(request.POST)
@@ -46,6 +47,9 @@ def register(request):
     """
     A view that manages the registration form
     """
+    if request.user.is_authenticated:
+        messages.error(request, "You are already logged in")
+        return redirect('home')
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
