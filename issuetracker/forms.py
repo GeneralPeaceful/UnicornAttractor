@@ -1,6 +1,7 @@
 from django import forms
 from .models import Ticket
 
+
 class ReportBugForm(forms.ModelForm):
     """
     Form to report a bug
@@ -34,4 +35,6 @@ class StaffRequestFeatureForm(forms.ModelForm):
     """
     class Meta:
         model = Ticket
-        fields = ('title', 'description', 'url', 'price', 'status', 'status_colour')
+        fields = (
+            'title', 'description', 'url',
+            'price', 'status', 'status_colour')

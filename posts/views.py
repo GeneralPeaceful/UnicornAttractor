@@ -1,22 +1,26 @@
+from comments.models import Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post
 from .forms import AddPostForm
-from comments.models import Comment
+
 
 def get_posts(request):
     """
-    Returns a list of Posts that were published prior to 'now' and render them to the 'blogposts.html' template
+    Returns a list of Posts that were published prior to 'now' and
+    render them to the 'blogposts.html' template
     """
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    posts = Post.objects.filter(
+        published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'posts.html', {'posts': posts})
 
 
 def post_detail(request, postid):
     """
-    Returns a single Post object based on the post ID (pk) and render it to the 'postdetail.html' template.
+    Returns a single Post object based on the post ID (pk) and render
+    it to the 'postdetail.html' template.
     Return a 404 error if the post is not found.
     """
     user = request.user
@@ -28,7 +32,7 @@ def post_detail(request, postid):
             if comment.strip() == '':
                 messages.error(request, 'Comment message is required.')
                 return redirect('post_detail', postid=post.pk)
-            
+
             comment = Comment(user=user, comment=comment, post=post)
             comment.save()
             messages.success(request, 'Thanks for your comment.')
@@ -57,7 +61,8 @@ def create_post(request, pk=None):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            messages.success(request, 'Your post has been published successfully.')
+            messages.success(
+                request, 'Your post has been published successfully.')
             return redirect(post_detail, post.pk)
     else:
         form = AddPostForm(instance=post)

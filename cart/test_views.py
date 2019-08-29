@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from .views import view_cart, add_to_cart, remove_from_cart, charge, update_cart
+from .views import (
+    view_cart, add_to_cart, remove_from_cart, charge, update_cart)
 from issuetracker.models import Ticket
+
 
 class TestViews(TestCase):
     """
@@ -21,5 +23,6 @@ class TestViews(TestCase):
         self.assertRedirects(page1, "/accounts/login/?next=/cart/")
         self.assertRedirects(page2, "/accounts/login/?next=/cart/add/1/")
         self.assertRedirects(page3, "/accounts/login/?next=/cart/remove/1/")
-        self.assertRedirects(page4, "/accounts/login/?next=/cart/update_cart/1/")
+        self.assertRedirects(
+            page4, "/accounts/login/?next=/cart/update_cart/1/")
         self.assertRedirects(page5, "/accounts/login/?next=/cart/charge/")
