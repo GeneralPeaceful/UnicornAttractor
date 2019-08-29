@@ -20,7 +20,7 @@
                     <h2><a href="{% url 'bug' bug.id %}">#{{ bug.id }} - {{ bug.title }}</a></h2>
                 </div>
                 <div class="col-5 float-left text-right">
-                    <button class="btn btn-{{ bug.status_colour }} status-button">Bugfix Status: {{ bug.status }}</button>
+                    <button class="btn btn-{{ bug.status_colour }} btn-header status-button">Bugfix Status: {{ bug.status }}</button>
                 </div>
                 <p class="fine-print col-12 float-left"><strong>Reported:</strong> {{ bug.created_on }} by {{ bug.created_by }}</p>
             </div>
