@@ -128,7 +128,7 @@ def add_bug(request):
     Display the correct form to allow a user to create a bug report
     """
     if request.method == "POST":
-        if request.user.is_authenticated:
+        if request.user.is_staff:
             form = StaffReportBugForm(request.POST)
         else:
             form = ReportBugForm(request.POST)

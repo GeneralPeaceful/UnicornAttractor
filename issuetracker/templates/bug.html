@@ -23,7 +23,7 @@
                 {% if user.is_authenticated and not user == bug.created_by %}
                     <form action="#" id="vote-form" method="POST">
                         <button onClick="voteOnTicket('{{ bug.id }}', '{{ csrf_token }}')" class="btn btn-primary">
-                            Me too<i class="fa fa-arrow-up"></i>
+                            Me too <i class="fa fa-arrow-up"></i>
                         </button>
                     </form>
                 {% endif %}
