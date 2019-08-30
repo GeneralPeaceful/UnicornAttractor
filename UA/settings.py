@@ -31,7 +31,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '69a0af81f95840498bb7c47a2d7d86b9.vfs.cloud9.us-east-1.amazonaws.com',
-    'http://127.0.0.1:8080/']
+    'http://127.0.0.1:8080/',
+    'https://sebs-milestone-5-ua.herokuapp.com/']
 
 
 # Application definition
