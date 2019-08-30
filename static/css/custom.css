@@ -64,6 +64,7 @@ p {
 
 /* ALERT OVERRIDES */
 
+.alert-danger,
 .alert-success {
     border-radius: 0.3rem;
     margin: 0.3rem;
