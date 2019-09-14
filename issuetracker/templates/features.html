@@ -6,7 +6,7 @@
         </div>
         <div class="col-5 text-right">
             {% if user.is_authenticated %}
-                <a href="{% url 'add_feature' %}" class="btn btn-primary btn-header">Request a feature</a>
+                <a href="{% url 'add_feature' %}" class="btn btn-primary btn-header status-button">Request a feature</a>
             {% else %}
                 <p class="request-login align-middle">Please <a href="{% url 'login' %}">Login</a> to request a feature</p>
             {% endif %}
@@ -20,7 +20,7 @@
                     <h2><a href="{% url 'feature' feature.id %}">{{ feature.title }}</a></h2>
                 </div>
                 <div class="col-6 col-md-5 float-left text-right">
-                    <button class="btn btn-{{ feature.status_colour }} btn-header status-button">Development Status: {{ feature.status }}</button>
+                    <div class="btn btn-{{ feature.status_colour }} btn-header status-button">Development Status: {{ feature.status }}</div>
                 </div>
                 <p class="fine-print col-12 float-left"><b>Requested:</b> {{ feature.created_on }} by {{ feature.created_by }}</p>
             </div>

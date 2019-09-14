@@ -160,3 +160,7 @@ body {
 .summary-header {
     border-bottom: 1px solid black;
 }
+
+.btn:not(.status-button) {
+    min-width: 120px;
+}

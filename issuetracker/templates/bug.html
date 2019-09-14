@@ -5,7 +5,7 @@
             <h1>{{ bug.title }}</h1>
         </div>
         <div class="col-4 float-left text-right summary-header">
-            <button class="btn btn-{{ bug.status_colour }} btn-header status-button">Bugfix Status: {{ bug.status }}</button>
+            <div class="btn btn-{{ bug.status_colour }} btn-header status-button">Bugfix Status: {{ bug.status }}</div>
         </div>
         <div class="col-12 summary-content">
             <p>{{ bug.description }}</p>
