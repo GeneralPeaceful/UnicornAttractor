@@ -112,7 +112,12 @@ Given the nature of the apps required, this was alwasy going to be a multi-page 
     - **new/** - page containing the add new post form. Form auto-formatted by bootstrap
 - **admin/** - default django backend management pages with functionality limited or not by the superuser(s). Available only to site creator and staff members. Those able to log in to the admin site have a link on the main site (when logged in) that takes them there
 
-### Features Left to Implement
+### Additional Functionality
+
+There are several things I would like to point out about how the site works, that hopefully are common sense, but may confuse the first-time user:
+- You cannot upvote a bug that you created.
+- The admin site has an additional link in the navbar, which redirects to the admin site.
+- Admin/staff users access different forms for creating and editing bugs and features, for the purposes of updating the status of these tickets.
 
 ### Technologies Used
 
@@ -184,5 +189,7 @@ The deployment instructions below are based off of the assumption that the user 
 ## Credits
 
 Credit to [OpenClipart Vectors](https://pixabay.com/users/openclipart-vectors-30363/) for the Unicorn svg I am using for a logo.
+
+All rights and credit to [Wallpaperplay](https://wallpaperplay.com/) for the background image I am using.
 
 Much of the functionality and style ideas came from [Huckcity's Unicorn Attractor](https://milestone-project-five.herokuapp.com/) site. I felt that the UX was brilliant and strived to build something similar, without directly copying it.
